@@ -9,13 +9,24 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart3, Users } from "lucide-react";
-
-export function SurveyCard({ survey, partecipants }) {
+type Survey = {
+  id: number;
+  surveyName: string;
+  Description: string;
+  partecipants: number;
+};
+export function SurveyCard({
+  survey,
+  partecipants,
+}: {
+  survey: Survey;
+  partecipants: number;
+}) {
   return (
     <Card className="h-full flex flex-col hover:shadow-lg transition-shadow">
       <CardHeader>
         <CardTitle>{survey.surveyName}</CardTitle>
-        <CardDescription>{survey.description}</CardDescription>
+        <CardDescription>{survey.Description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
