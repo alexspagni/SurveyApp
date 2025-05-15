@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 export default function ContactFormPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -9,6 +10,7 @@ export default function ContactFormPage() {
   const [gender, setGender] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ export default function ContactFormPage() {
     // Qui puoi gestire l'invio o i dati
     setSubmitted(true);
     setErrors(null);
+    navigate("/"); // Naviga alla home page dopo l'invio
   };
 
   return (
@@ -115,13 +118,13 @@ export default function ContactFormPage() {
               </div>
             </div>
 
-            <div className="pt-4 text-center">
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+            <div className="pt-10 text-center">
+              <Button
+                variant="outline"
+                className="w-full py-4 text-lg font-semibold"
               >
                 Invia
-              </button>
+              </Button>
             </div>
           </>
         )}
