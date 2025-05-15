@@ -36,7 +36,7 @@ export function SurveyCard({
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
         <Button asChild className="w-full">
-          <Link to="/survey">Partecipa al Sondaggio</Link>
+          <Link to={`/survey/${survey.id}`}>Partecipa al Sondaggio</Link>
         </Button>
         <div className="flex gap-2 w-full">
           <Button asChild variant="outline" className="flex-1">
