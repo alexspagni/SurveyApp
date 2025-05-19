@@ -131,7 +131,7 @@ const Statistic = () => {
           Survey Statistics
         </h2>
 
-        <div className="w-[300px] h-[300px] sm:h-[600px]">
+        <div className="w-[400px] h-[300px] sm:h-[700px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
@@ -143,7 +143,7 @@ const Statistic = () => {
                 interval={0}
                 angle={-45}
                 textAnchor="end"
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 14 }}
                 height={60} // spazio per etichette inclinate
               />
               <YAxis allowDecimals={false} />
