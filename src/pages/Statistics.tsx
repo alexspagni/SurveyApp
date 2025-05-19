@@ -130,7 +130,7 @@ const Statistic = () => {
       Survey Statistics
     </h2>
 
-    <div className="w-full h-[300px] sm:h-[700px]">
+    <div className="w-[300px] h-[300px] sm:h-[700px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
