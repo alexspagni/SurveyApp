@@ -18,7 +18,7 @@ import { useState } from "react";
 type Data = {
   name: string; // Nome della categoria
   Beautiful: number; // Valore per la categoria "Beautiful"
-  Intelligent: number; // Valore per la categoria "Intelligent"
+  Smart: number; // Valore per la categoria "Intelligent"
   Trustworthy: number; // Valore per la categoria "Trustworthy"
 };
 
@@ -104,13 +104,13 @@ const Statistic = () => {
       {
         name: "Single",
         Beautiful: countSBeautiful ?? 0,
-        Intelligent: countSSmart ?? 0,
+        Smart: countSSmart ?? 0,
         Trustworthy: countSTrustworthy ?? 0,
       },
       {
         name: "Engaged",
         Beautiful: countEBeautiful ?? 0,
-        Intelligent: countESmart ?? 0,
+        Smart: countESmart ?? 0,
         Trustworthy: countETrustworthy ?? 0,
       },
     ];
@@ -148,7 +148,7 @@ const Statistic = () => {
           <Tooltip />
           <Legend />
           <Bar dataKey="Beautiful" fill="#6366f1" />
-          <Bar dataKey="Intelligent" fill="#10b981" />
+          <Bar dataKey="Smart" fill="#10b981" />
           <Bar dataKey="Trustworthy" fill="#f59e0b" />
         </BarChart>
       </ResponsiveContainer>
