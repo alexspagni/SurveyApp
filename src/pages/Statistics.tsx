@@ -130,11 +130,11 @@ const Statistic = () => {
       Survey Statistics
     </h2>
 
-    <div className="w-[300px] h-[300px] sm:h-[700px]">
+    <div className="w-full h-[300px] sm:h-[700px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          margin={{ top: 20, right: 20, left: 0, bottom: 30 }}
+          margin={{ top: 20, right: 10, left: 0, bottom: 10 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
