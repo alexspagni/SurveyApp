@@ -124,40 +124,37 @@ const Statistic = () => {
     }
   }, [surveyId]);
 
-  return (
-    
-      <div >
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
-          Survey Statistics
-        </h2>
+ return (
+  <div>
+    <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
+      Survey Statistics
+    </h2>
 
-        <div className="w-[300px] h-[300px] sm:h-[700px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{ top: 20, right: 20, left: 0, bottom: 50 }} // più spazio in basso per etichette
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                interval={0}
-                angle={-45}
-                textAnchor="end"
-                tick={{ fontSize: 14 }}
-                height={60} // spazio per etichette inclinate
-              />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="Beautiful" fill="#6366f1" />
-              <Bar dataKey="Intelligent" fill="#10b981" />
-              <Bar dataKey="Trustworthy" fill="#f59e0b" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
- 
-  );
+    <div className="w-[300px] h-[300px] sm:h-[700px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 20, left: 0, bottom: 30 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="name"
+            interval={0}
+            textAnchor="middle"
+            tick={{ fontSize: 14 }}
+            height={40}
+          />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Beautiful" fill="#6366f1" />
+          <Bar dataKey="Intelligent" fill="#10b981" />
+          <Bar dataKey="Trustworthy" fill="#f59e0b" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  </div>
+);
 };
 
 export default Statistic;
