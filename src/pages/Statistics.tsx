@@ -11,94 +11,62 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import supabase from "../supabaseClient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 type Data = {
-  name: string; // Nome della categoria
-  Beautiful: number; // Valore per la categoria "Beautiful"
-  Intelligent: number; // Valore per la categoria "Intelligent"
-  Trustworthy: number; // Valore per la categoria "Trustworthy"
+  name: string;
+  Beautiful: number;
+  Intelligent: number;
+  Trustworthy: number;
 };
 
 const Statistic = () => {
   const { surveyId } = useParams();
-
   const [data, setData] = useState<Data[]>([]);
 
   async function getStatistics(surveyId: string) {
-    const { count: countSBeautiful, error: countBeautifulError } = await supabase
+    const { count: countSBeautiful } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Single")
       .eq("Category1", "Beautiful");
 
-    if (countBeautifulError) {
-      console.error("Error counting Beautiful responses:", countBeautifulError);
-      return;
-    }
-
-    const { count: countSSmart, error: countSmartError } = await supabase
+    const { count: countSSmart } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Single")
       .eq("Category2", "Smart");
 
-    if (countSmartError) {
-      console.error("Error counting Intelligent responses:", countSmartError);
-      return;
-    }
-
-    const { count: countSTrustworthy, error: countTrustworthyError } = await supabase
+    const { count: countSTrustworthy } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Single")
       .eq("Category3", "Trustworthy");
 
-    if (countTrustworthyError) {
-      console.error("Error counting Intelligent responses:", countTrustworthyError);
-      return;
-    }
-
-    const { count: countEBeautiful, error: countBeautifulError2 } = await supabase
+    const { count: countEBeautiful } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Engaged")
       .eq("Category1", "Beautiful");
 
-    if (countBeautifulError2) {
-      console.error("Error counting Beautiful responses:", countBeautifulError2);
-      return;
-    }
-
-    const { count: countESmart, error: countSmartError2 } = await supabase
+    const { count: countESmart } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Engaged")
       .eq("Category2", "Smart");
 
-    if (countSmartError2) {
-      console.error("Error counting Intelligent responses:", countSmartError2);
-      return;
-    }
-
-    const { count: countETrustworthy, error: countTrustworthyError2 } = await supabase
+    const { count: countETrustworthy } = await supabase
       .from("Voters")
       .select("*", { count: "exact", head: true })
       .eq("Survey", surveyId)
       .eq("Relationship", "Engaged")
       .eq("Category3", "Trustworthy");
-
-    if (countTrustworthyError2) {
-      console.error("Error counting Trustworthy responses:", countTrustworthyError2);
-      return;
-    }
 
     const aggregatedData = [
       {
@@ -114,8 +82,8 @@ const Statistic = () => {
         Trustworthy: countETrustworthy ?? 0,
       },
     ];
+
     setData(aggregatedData);
-    console.log(aggregatedData);
   }
 
   useEffect(() => {
@@ -125,38 +93,35 @@ const Statistic = () => {
   }, [surveyId]);
 
   return (
-    
-      <div >
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
-          Survey Statistics
-        </h2>
-
-        <div className="w-full h-[300px] sm:h-[400px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{ top: 20, right: 20, left: 0, bottom: 50 }} // più spazio in basso per etichette
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                interval={0}
-                angle={-45}
-                textAnchor="end"
-                tick={{ fontSize: 12 }}
-                height={60} // spazio per etichette inclinate
-              />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="Beautiful" fill="#6366f1" />
-              <Bar dataKey="Intelligent" fill="#10b981" />
-              <Bar dataKey="Trustworthy" fill="#f59e0b" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+    <div className="w-screen h-screen flex flex-col items-center justify-center bg-white">
+      <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-4">
+        Survey Statistics
+      </h2>
+      <div className="w-full h-full px-2 pb-4 sm:px-8 sm:pb-6">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={data}
+            margin={{ top: 20, right: 20, left: 0, bottom: 60 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="name"
+              interval={0}
+              angle={-45}
+              textAnchor="end"
+              height={70}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis allowDecimals={false} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Beautiful" fill="#6366f1" />
+            <Bar dataKey="Intelligent" fill="#10b981" />
+            <Bar dataKey="Trustworthy" fill="#f59e0b" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
- 
+    </div>
   );
 };
 
