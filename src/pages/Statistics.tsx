@@ -11,9 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import supabase from "../supabaseClient";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 type Data = {
   name: string; // Nome della categoria
@@ -22,101 +21,149 @@ type Data = {
   Trustworthy: number; // Valore per la categoria "Trustworthy"
 };
 
-
-
+// Legenda personalizzata con wrap automatico
+const renderCustomLegend = (props: any) => {
+  const { payload } = props;
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "10px",
+        marginTop: 10,
+      }}
+    >
+      {payload.map((entry: any) => (
+        <div
+          key={entry.value}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            fontSize: 14,
+            whiteSpace: "nowrap",
+          }}
+        >
+          <div
+            style={{
+              width: 12,
+              height: 12,
+              backgroundColor: entry.color,
+              marginRight: 6,
+              borderRadius: 2,
+            }}
+          />
+          {entry.value}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Statistic = () => {
-  // Dati finti per visualizzazione
-  
   const { surveyId } = useParams();
 
   const [data, setData] = useState<Data[]>([]);
-async function getStatistics(surveyId: string) {
-  const { count: countSBeautiful, error: countBeautifulError } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Single").eq("Category1", "Beautiful");
 
-  if (countBeautifulError) {
-    console.error("Error counting Beautiful responses:", countBeautifulError);
-    return;
-  }
+  async function getStatistics(surveyId: string) {
+    const { count: countSBeautiful, error: countBeautifulError } = await supabase
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Single")
+      .eq("Category1", "Beautiful");
 
-  const { count: countSSmart, error: countSmartError } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Single").eq("Category2", "Smart");
+    if (countBeautifulError) {
+      console.error("Error counting Beautiful responses:", countBeautifulError);
+      return;
+    }
 
-  if (countSmartError) {
-    console.error("Error counting Intelligent responses:", countSmartError);
-    return;
-  }
- const { count: countSTrustworthy, error: countTrustworthyError } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Single").eq("Category3", "Trustworthy");
+    const { count: countSSmart, error: countSmartError } = await supabase
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Single")
+      .eq("Category2", "Smart");
 
-  if (countTrustworthyError) {
-    console.error("Error counting Intelligent responses:", countTrustworthyError);
-    return;
-  }
-   const { count: countEBeautiful, error: countBeautifulError2 } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Engaged").eq("Category1", "Beautiful");
+    if (countSmartError) {
+      console.error("Error counting Intelligent responses:", countSmartError);
+      return;
+    }
 
-  if (countBeautifulError2) {
-    console.error("Error counting Intelligent responses:", countBeautifulError2);
-    return;
-  }
-  
-  const { count: countESmart, error: countSmartError2 } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Engaged").eq("Category2", "Smart");
+    const { count: countSTrustworthy, error: countTrustworthyError } = await supabase
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Single")
+      .eq("Category3", "Trustworthy");
 
-  if (countSmartError2) {
-    console.error("Error counting Intelligent responses:", countSmartError2);
-    return;
-  }
+    if (countTrustworthyError) {
+      console.error("Error counting Intelligent responses:", countTrustworthyError);
+      return;
+    }
+
+    const { count: countEBeautiful, error: countBeautifulError2 } = await supabase
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Engaged")
+      .eq("Category1", "Beautiful");
+
+    if (countBeautifulError2) {
+      console.error("Error counting Intelligent responses:", countBeautifulError2);
+      return;
+    }
+
+    const { count: countESmart, error: countSmartError2 } = await supabase
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Engaged")
+      .eq("Category2", "Smart");
+
+    if (countSmartError2) {
+      console.error("Error counting Intelligent responses:", countSmartError2);
+      return;
+    }
 
     const { count: countETrustworthy, error: countTrustworthyError2 } = await supabase
-    .from("Voters")
-    .select("*", { count: "exact", head: true })
-    .eq("Survey", surveyId).eq("Relationship", "Engaged").eq("Category1", "Trustworthy");
+      .from("Voters")
+      .select("*", { count: "exact", head: true })
+      .eq("Survey", surveyId)
+      .eq("Relationship", "Engaged")
+      .eq("Category3", "Trustworthy");
 
-  if (countTrustworthyError2) {
-    console.error("Error counting Intelligent responses:", countTrustworthyError2);
-    return;
+    if (countTrustworthyError2) {
+      console.error("Error counting Intelligent responses:", countTrustworthyError2);
+      return;
+    }
+
+    const aggregatedData = [
+      {
+        name: "Single",
+        Beautiful: countSBeautiful ?? 0,
+        Intelligent: countSSmart ?? 0,
+        Trustworthy: countSTrustworthy ?? 0,
+      },
+      {
+        name: "Engaged",
+        Beautiful: countEBeautiful ?? 0,
+        Intelligent: countESmart ?? 0,
+        Trustworthy: countETrustworthy ?? 0,
+      },
+    ];
+    setData(aggregatedData);
+    console.log(aggregatedData);
   }
 
-  const aggregatedData = [
-    {
-      name: "Single",
-      Beautiful: countSBeautiful ?? 0,
-      Intelligent: countSSmart ?? 0,
-      Trustworthy: countSTrustworthy ?? 0,
-    },
-    {
-      name: "Engaged",
-      Beautiful: countEBeautiful ?? 0,
-      Intelligent: countESmart ?? 0,
-      Trustworthy: countETrustworthy ?? 0,
-    },
-  ];
-  setData(aggregatedData);
-
-
-}
   useEffect(() => {
     if (surveyId) {
       getStatistics(surveyId);
     }
   }, [surveyId]);
-  
 
   return (
-      
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-6 sm:p-10">
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
@@ -127,13 +174,13 @@ async function getStatistics(surveyId: string) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+              margin={{ top: 20, right: 20, left: 0, bottom: 50 }} // spazio extra per legenda
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis allowDecimals={false} />
               <Tooltip />
-              <Legend />
+              <Legend content={renderCustomLegend} />
               <Bar dataKey="Beautiful" fill="#6366f1" />
               <Bar dataKey="Intelligent" fill="#10b981" />
               <Bar dataKey="Trustworthy" fill="#f59e0b" />
