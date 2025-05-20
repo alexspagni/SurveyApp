@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import supabase from "../supabaseClient";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 type Data = {
   name: string; // Nome della categoria
@@ -124,37 +117,52 @@ const Statistic = () => {
     }
   }, [surveyId]);
 
- return (
-  <div>
-    <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">
-      Survey Statistics
-    </h2>
-
-    <div className="w-[300px] h-[300px] sm:h-[700px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{ top: 20, right: 10, left: 0, bottom: 10 }}
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Relationship Status Statistics</CardTitle>
+        <CardDescription>Comparison of three categories across single and engaged individuals</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer
+          config={{
+            category1: {
+              label: "Beautiful",
+              color: "hsl(var(--chart-1))",
+            },
+            category2: {
+              label: "Smart",
+              color: "hsl(var(--chart-2))",
+            },
+            category3: {
+              label: "Trustworthy",
+              color: "hsl(var(--chart-3))",
+            },
+          }}
+          className="h-[400px]"
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="name"
-            interval={0}
-            textAnchor="middle"
-            tick={{ fontSize: 14 }}
-            height={40}
-          />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="Beautiful" fill="#6366f1" />
-          <Bar dataKey="Smart" fill="#10b981" />
-          <Bar dataKey="Trustworthy" fill="#f59e0b" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
-);
+          <BarChart
+            data={data}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 20,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip content={<ChartTooltipContent />} />
+            <Legend />
+            <Bar dataKey="Beautiful" fill="#ff6b6b" name="Beautiful" />
+            <Bar dataKey="Smart" fill="#f0ad4e" name="Smart" />
+            <Bar dataKey="Trustworthy" fill="#17a2b8" name="Trustworthy" />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+  )
 };
 
 export default Statistic;
