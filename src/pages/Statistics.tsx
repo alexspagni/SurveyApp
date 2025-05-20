@@ -1,12 +1,11 @@
 "use client";
 
-
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts"
+import { useState, useEffect } from "react"
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
-import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import supabase from "../supabaseClient";
+import supabase from "../supabaseClient"
+
 
 type Data = {
   name: string; // Nome della categoria
@@ -16,6 +15,22 @@ type Data = {
 };
 
 const Statistic = () => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    // Initial check
+    checkIfMobile()
+
+    // Add event listener
+    window.addEventListener("resize", checkIfMobile)
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkIfMobile)
+  }, [])
   const { surveyId } = useParams();
 
   const [data, setData] = useState<Data[]>([]);
@@ -117,52 +132,52 @@ const Statistic = () => {
     }
   }, [surveyId]);
 
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Relationship Status Statistics</CardTitle>
-        <CardDescription>Comparison of three categories across single and engaged individuals</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={{
-            category1: {
-              label: "Beautiful",
-              color: "hsl(var(--chart-1))",
-            },
-            category2: {
-              label: "Smart",
-              color: "hsl(var(--chart-2))",
-            },
-            category3: {
-              label: "Trustworthy",
-              color: "hsl(var(--chart-3))",
-            },
-          }}
-          className="h-[400px]"
-        >
-          <BarChart
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 20,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip content={<ChartTooltipContent />} />
-            <Legend />
-            <Bar dataKey="Beautiful" fill="#ff6b6b" name="Beautiful" />
-            <Bar dataKey="Smart" fill="#f0ad4e" name="Smart" />
-            <Bar dataKey="Trustworthy" fill="#17a2b8" name="Trustworthy" />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  )
+ return (
+ <div className="container mx-auto py-4 px-2">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">Statistics</h1>
+      <Card className="w-full">
+        <CardHeader className="py-3">
+          <CardTitle className="text-lg md:text-xl text-center">Relationship Status</CardTitle>
+          <CardDescription className="text-sm text-center">
+            Categories comparison across relationship statuses
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-2 md:p-4">
+          <div className="w-full" style={{ height: isMobile ? "300px" : "400px" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={data}
+                margin={{
+                  top: 10,
+                  right: 10,
+                  left: isMobile ? 0 : 10,
+                  bottom: isMobile ? 60 : 40,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" tick={{ fontSize: isMobile ? 12 : 14 }} />
+                <YAxis tick={{ fontSize: isMobile ? 12 : 14 }} width={isMobile ? 30 : 40} />
+                <Tooltip />
+                <Legend
+                  layout="horizontal"
+                  verticalAlign="bottom"
+                  align="center"
+                  wrapperStyle={{
+                    paddingTop: isMobile ? "10px" : "20px",
+                    fontSize: isMobile ? "12px" : "14px",
+                  }}
+                />
+                <Bar dataKey="Beautiful" name="Beautiful" fill="#8884d8" barSize={isMobile ? 15 : 30} />
+                <Bar dataKey="Smart" name="Smart" fill="#82ca9d" barSize={isMobile ? 15 : 30} />
+                <Bar dataKey="Trustworthy" name="Trustworthy" fill="#ffc658" barSize={isMobile ? 15 : 30} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+);
 };
+
 
 export default Statistic;
