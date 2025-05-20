@@ -6,7 +6,7 @@ export default function useRedirectMobileOnRefresh() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    const isMobile = /Mobi|Android|Iphone/i.test(navigator.userAgent);
     const isRefresh = performance.navigation.type === performance.navigation.TYPE_RELOAD;
 
     if (isMobile && isRefresh && location.pathname !== '/') {

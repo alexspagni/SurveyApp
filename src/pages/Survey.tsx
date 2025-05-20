@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import supabase from "../supabaseClient";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import BackButton from "./back";
 
 export default function SurvupdatyPage() {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ export default function SurvupdatyPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white rounded-lg shadow-md p-6 flex flex-col items-center"
       >
+        <BackButton/>
         <h2 className="text-2xl font-bold text-center mb-2">Survey</h2>
         <p className="text-sm text-gray-500 text-center mb-6">
           Select the best two options that suit best your boyfriend or
@@ -118,7 +120,7 @@ export default function SurvupdatyPage() {
         onChange={(e) => handleOptionToggle(index, e.target.checked)}
         className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
       />
-      <span className="text-base sm:text-lg font-medium">
+      <span className="text-base sm:text-lg font-semibold">
         {categoryName}
       </span>
     </label>
@@ -128,12 +130,15 @@ export default function SurvupdatyPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-sm font-medium text-gray-700">
+          <p className="text-sm font-semibold text-gray-700">
             Selected Options: {selectedOptions.length}/2
           </p>
         </div>
 
-        <Button variant="outline" className="w-full py-4 text-lg font-semibold">
+        <Button
+  variant={"outline"}
+  className="w-full py-4 text-lg font-semibold bg-blue-600 text-black rounded-md shadow"
+>
           Send
         </Button>
 

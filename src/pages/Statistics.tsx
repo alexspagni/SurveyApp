@@ -5,6 +5,7 @@ import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis, Responsive
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useParams } from "react-router-dom"
 import supabase from "../supabaseClient"
+import BackButton from "./back"
 
 
 type Data = {
@@ -134,6 +135,7 @@ const Statistic = () => {
 
  return (
  <div className="container mx-auto py-4 px-2">
+  <BackButton/>
       <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">Statistics</h1>
       <Card className="w-full">
         <CardHeader className="py-3">
