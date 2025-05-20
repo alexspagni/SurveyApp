@@ -4,7 +4,9 @@ import Home from "./pages/Home";
 import Statistic from "./pages/Statistics";
 import ContactInformation from "./pages/Contacts";
 import Survey from "./pages/Survey";
+import useRedirectMobileOnRefresh from "./refresh";
 function App() {
+  useRedirectMobileOnRefresh();
   return (
     <Routes>
       <Route path="/" element={<Home />} />
